@@ -1,0 +1,82 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+
+
+</head>
+<body>
+    @Html.Partial("_HeaderPartial")
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href=@Url.Action("Index","Main")>Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar navbar-nav navbar-right">
+                @if (Request.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a href=@Url.Action("LogOut","Authorization") class="nav-link">Wyloguj</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hello @User.Identity.Name
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href=@Url.Action("ListaBlogowUzytkownika","Main", new { username = User.Identity.Name})>Twoje Blogi</a>
+                            <a class="dropdown-item" href="#">Ustawienia</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">To do</a>
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item float-right">
+                        <a href=@Url.Action("LogIn","Authorization") class="nav-link">Zaloguj</a>
+                    </li>
+
+                    <li class="nav-item float-right">
+                        <a href=@Url.Action("Register","Authorization") class="nav-link">Zajerestruj się</a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/bootstrap")
+    @Scripts.Render("~/Scripts/popper")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

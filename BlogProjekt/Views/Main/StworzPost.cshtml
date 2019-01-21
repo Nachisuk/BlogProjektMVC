@@ -1,0 +1,137 @@
+﻿@model BlogProjekt.Models.Post
+@using BlogProjekt.KlasyPomocnicze
+@{
+    //ViewBag.BlogID = Model.BlogsBlog_ID;
+    ViewBag.Title = "StworzPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h2>StworzPost</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Post</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.text_content, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.text_content, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ifTop, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ifTop)
+                        @Html.ValidationMessageFor(model => model.ifTop, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.img_route, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.img_route, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.image_file_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.image_file_name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.image_file_name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="custom-control-label">Tagi postu</label>
+                <div id="select1" class="col-md-10">
+                    <select id="tags1" class="selectpicker" name="TagsIds" multiple data-live-search="true" title="Dodaj tagi postu">
+                        @foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
+                            {
+                            <option value=@tag.Tag_ID>@tag.tagName</option>
+                            }
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        <p><strong>Twój tag nie istnieje na liście? Dodaj go i bądź szczęśliwym człowiekiem</strong></p>
+        <input type="text" id="label" name="TagName" value="" />
+        <button type="button" id="addTag"></button>
+    </div>
+
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+</body>
+</html>
+
+
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker('render');
+
+        $('#addTag').click(function () {
+            alert($('#label').val());
+            var link = '@Url.Action("stworztagasync","Main")';
+            var args = {
+                tagName: $('#label').val()
+            }
+
+            $.ajax({
+                type: "GET",
+                url: link, // url of your action
+                data: args, // parameters if available
+                dataType: "json",
+                success: function (data) {
+
+                    alert("Tag dodany");
+                    $('.selectpicker').append(new Option(data.nazwa, data.id));
+                    $('.selectpicker').selectpicker('refresh');
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                }
+            });
+
+        });
+    });
+
+</script>

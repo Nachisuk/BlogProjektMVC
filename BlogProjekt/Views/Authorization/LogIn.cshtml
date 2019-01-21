@@ -1,0 +1,56 @@
+﻿@model BlogProjekt.Models.LogInModel
+@{
+
+    Layout = Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    <!--<%= flash[:danger] %>-->
+    @Html.ValidationSummary(true)
+</p>
+
+<div class="row">
+    <div class="col">
+
+    </div>
+    <div class="col-md-6 col-md-offset-3">
+        <h1>Zaloguj</h1>
+        @using (Html.BeginForm())
+        {<text>
+
+        
+
+        <div class="form-group">
+            <p>
+                @Html.LabelFor(model => model.Email)
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                <!--tu ewentualnie te validate-->
+            </p>
+        </div>
+
+        <div class="form-group">
+            <p>
+                @Html.LabelFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                <!--tu ewentualnie te validate-->
+            </p>
+        </div>
+        <div class="form-group">
+            <p>
+                <!--tu ewentualnie recaptcha-->
+            </p>
+        </div>
+
+        <input type="submit" value="Log in" class="btn btn-primary" />
+        
+
+        </text>}
+        <p>Nie masz jeszcez konta? <a href=@Url.Action("Register","Authorization")>Zarejestruj się teraz!</a></p>
+    </div>
+
+    <div class="col">
+
+    </div>
+</div>
+
+

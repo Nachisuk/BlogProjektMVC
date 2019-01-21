@@ -1,0 +1,6 @@
+﻿@using BlogProjekt.KlasyPomocnicze
+
+@foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
+{
+    <option value=@tag.Tag_ID>@tag.tagName</option>
+}

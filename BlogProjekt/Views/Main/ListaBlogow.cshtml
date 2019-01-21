@@ -1,0 +1,74 @@
+﻿@using BlogProjekt.KlasyPomocnicze;
+@model IEnumerable<BlogProjekt.Models.Blogs>
+
+@{
+    ViewBag.Title = "ListaBlogow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col-10">
+
+            @foreach (var item in Model)
+            {<text>
+            <div class="card" style="margin:4px">
+                <div class="card-body">
+                    <h4 class="card-title">@item.nazwa</h4>
+                    <p class="card-text">Założony przez użytkownika: <em>@item.Users.username</em></p>
+                    <p>
+                        @foreach(var kind in item.Kinds)
+                        {
+                            <span class="badge badge-pill badge-secondary"> #@kind.kindName </span>
+                        }
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col">
+                            <small class="text-muted">Założony dnia: @(item.dataZalozenia.ToString("dd.M.yyyy") + "r.")<!--<%= blog.dataZalozenia.strftime("%d.%m.%Yr.") %>--></small>
+                        </div>
+                        <div class="col">
+                            <div class="float-right">
+                                <a href=@Url.Action("WyswietlBlog", "Main", new { id = item.Blog_ID})>
+                                    <button type="button" class="btn btn-primary">Przejdź</button>
+                                </a>
+
+                                @if(Request.IsAuthenticated && (User.Identity.Name == item.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                {<text>
+                                <a href=@Url.Action("EdytujBlog", "Main", new { id = item.Blog_ID })>
+                                    <button type="button" class="btn btn-primary">Edytuj</button>
+                                </a>
+                                <a onclick="return confirm('Czy na pewno chcesz usunąć ten blog?');" href=@Url.Action("UsunBlog", "Main", new { id = item.Blog_ID })>
+                                    <button type="button" class="btn btn-primary">Usuń</button>
+                                </a>
+
+                                </text>}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            </text>}
+
+        </div>
+        <div class="col">
+            @if(Request.IsAuthenticated)
+            {
+            <a href=@Url.Action("StworzBlog", "Main")>
+                <button type="button" class="btn btn-dark">Nowy blog</button>
+            </a>
+            }
+        </div>
+    </div>
+
+
+</div>

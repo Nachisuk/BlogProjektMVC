@@ -1,0 +1,210 @@
+﻿@model BlogProjekt.Models.Blogs
+@using BlogProjekt.KlasyPomocnicze;
+
+@{
+    ViewBag.BlogID = Model.Blog_ID;
+    ViewBag.Title = "WyswietlBlog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>WyswietlBlog</h2>
+
+<div>
+    <h4>Blogs</h4>
+    <hr />
+
+    <dl class="dl-horizontal">
+        <div class="col" style="display:flex">
+            <div id="blog_@Model.Blog_ID" style="margin-right:2px">
+                @Html.Partial("blogFollowButton", Model)
+            </div>
+            <div id="com_@Model.Blog_ID">
+                <span>@Model.followCount</span>
+            </div>
+        </div>
+        <dt>
+            @Html.DisplayNameFor(model => model.Blog_ID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Blog_ID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.dataZalozenia)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dataZalozenia)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.dataAktualizacji)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dataAktualizacji)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UsersUser_ID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UsersUser_ID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.followCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.followCount)
+        </dd>
+    </dl>
+</div>
+<div class="col-10">
+    @if (Model.Post.Count > 0)
+    {
+        foreach (var post in Model.Post)
+        {<text>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>@post.title</h2>
+        </div>
+
+        <div style="max-height:320px;overflow:hidden">
+            <img class="img-fluid card-img-top" id="img-details" src="@post.img_route" alt="Alternate Text" />
+        </div>
+
+        <div class="card-body">
+            <p class="card-text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                @post.text_content
+            </p>
+
+            <p>
+                @foreach (var tag in post.Tags)
+                 {
+                <span class="badge badge-pill badge-secondary"> #@tag.tagName </span>
+                 }
+            </p>
+
+        </div>
+
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <small class="text-muted">
+                        Opublikowane dnia: @(post.dataStworzenia.ToString("dd.M.yyyy") + "r.")
+                    </small>
+                </div>
+                <div class="col">
+                    <div class="float-right">
+                        <a href=@Url.Action("WyswietlPost", "Main", new { id = post.Post_ID})>
+                            <button type="button" class="btn btn-primary">Przejdź</button>
+                        </a>
+
+                        @if (Request.IsAuthenticated && (User.Identity.Name == Model.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                    {<text>
+                            <a href=@Url.Action("EdytujPost", "Main", new {id = post.Post_ID})>
+                                <button type="button" class="btn btn-primary">Edytuj</button>
+                            </a>
+                            <a onclick="return confirm('Czy na pewno chcesz usunąć ten post?');" href=@Url.Action("UsunPost", "Main", new { id = post.Post_ID, idBlog = Model.Blog_ID })>
+                                <button type="button" class="btn btn-primary">Usuń</button>
+                            </a>
+
+                    </text>}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+                
+        </text>}
+    }
+
+</div>
+<p>
+    @if (User.Identity.Name == Model.Users.username)
+    {
+        <a href=@Url.Action("StworzPost","Main", new {id = Model.Blog_ID })>Dodaj Post</a>
+    }
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+<script>
+    $(function () {
+        $('body').on("click", ".upFollowButton", function () {
+            var $button = $(this);
+            var href = '@Url.Action("blogFollow", "Main")';
+            var args = {
+                userName: $(this).data('user-name'),
+                blogID: $(this).data('blog-id')
+            };
+
+            $.ajax({
+                type: "GET",
+                url: href, // url of your action
+                data: args, // parameters if available
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var string = "com_" + data.id;
+                    $("#" + string).html(data.followCount);
+
+                    var string1 = "blog_" + data.id;
+                    $("#" + string1).load('@(Url.Action("blogPartialView", "Main",null, Request.Url.Scheme))?blogId=' + data.id);
+
+
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('body').on("click", ".downFollowButton", function () {
+            var $button = $(this);
+            var href = '@Url.Action("blogUnFollow", "Main")';
+            var args = {
+                userName: $(this).data('user-name'),
+                blogID: $(this).data('blog-id')
+            };
+
+            $.ajax({
+                type: "GET",
+                url: href, // url of your action
+                data: args, // parameters if available
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var string = "com_" + data.id;
+                    $("#" + string).html(data.followCount);
+
+                    var string1 = "blog_" + data.id;
+                    $("#" + string1).load('@(Url.Action("blogPartialView", "Main",null, Request.Url.Scheme))?blogId=' + data.id);
+
+
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error");
+                }
+            });
+        });
+    })
+
+
+</script>

@@ -1,0 +1,15 @@
+﻿@using BlogProjekt.KlasyPomocnicze
+@model BlogProjekt.Models.Blogs
+@if (Request.IsAuthenticated)
+{
+    if (!ObsługaBazyDanych.czyUzytkownikMaFollowNaBlogu(User.Identity.Name, Model.Blog_ID))
+    {
+        <button type="button" style="background:none;" class="upFollowButton" data-blog-id="@Model.Blog_ID" data-user-name="@User.Identity.Name">ButtonTemp+<i class="fas fa-plus-square" style="color:forestgreen"></i></button>
+    }
+    else
+    {
+        <button id="b-delete" type="button" style="background:none;" class="downFollowButton" data-blog-id="@Model.Blog_ID" data-user-name="@User.Identity.Name">ButtonTemp-<i class="fas fa-plus-square" style="color:red"></i></button>
+    }
+
+}
+

@@ -1,0 +1,32 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <p>Hello there!!!</p>
+        <p>Tymczasowy panel głowny sterowania wszechświatem</p>
+
+        <ul>
+            <li><a href=@Url.Action("LogIn","Authorization") class="btn-info">Akcja zalogowania</a></li>
+            <li><a href=@Url.Action("Register","Authorization") class="btn-info">Akcja rejestracji</a></li>
+            <li><a href=@Url.Action("ListaUzytkownikow","Main") class="btn-info">Lista użytkowników</a></li>
+            <li><a href=@Url.Action("StworzBlog","Main") class="btn-info">Załóż Blog</a></li>
+            <li><a href=@Url.Action("ListaBlogow","Main") class="btn-info">Lista Blogów</a></li>
+            <li><a href=@Url.Action("StworzTag","Main") class="btn-info">Stwórz Tag</a></li>
+            <li><a href=@Url.Action("StworzKind","Main") class="btn-info">Stwórz Kind</a></li>
+            <li><a href=@Url.Action("ListaTagow","Main") class="btn-info">Lista Tagów</a></li>
+            <li><a href=@Url.Action("ListaKind","Main") class="btn-info">Lista Kindów</a></li>
+        </ul>
+
+    </div>
+</body>
+</html>

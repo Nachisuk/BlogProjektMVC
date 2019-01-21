@@ -1,0 +1,73 @@
+﻿@model IEnumerable<BlogProjekt.Models.Blogs>
+
+@{
+    
+    ViewBag.Title = "ListaBlogow";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ListaBlogow</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Blog_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataZalozenia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataAktualizacji)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UsersUser_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.followCount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Blog_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dataZalozenia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dataAktualizacji)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsersUser_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.followCount)
+            </td>
+            <td>
+                <a href=@Url.Action("Edit", "Edit", new { /* id=item.PrimaryKey */ })>content</a>
+                <a href=@Url.Action("WyswietlBlog", "Main", new { id = item.Blog_ID})>Sczegóły</a>
+                <a href=@Url.Action("UsunBlog", "Main", new { id = item.Blog_ID })>Usuń</a>
+
+            </td>
+        </tr>
+    }
+
+</table>

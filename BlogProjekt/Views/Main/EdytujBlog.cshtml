@@ -1,0 +1,59 @@
+﻿@model BlogProjekt.Models.Blogs
+@using BlogProjekt.KlasyPomocnicze;
+@{
+    ViewBag.Title = "EdytujBlog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EdytujBlog</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Blogs</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nazwa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p>Rodzaje blogu</p>
+            <div class="col-md-10">
+                <select id="tags" class="selectpicker" name="KindsIds" multiple data-live-search="true" title="Wybierz kategorie Bloga">
+                    @foreach (var kind in ObsługaBazyDanych.zwrocListeKind())
+                    {
+                        if(Model.Kinds.FirstOrDefault(k => k.Kind_ID == kind.Kind_ID) != null)
+                        {
+                            <option value=@kind.Kind_ID selected>@kind.kindName</option>
+                        }
+                        else
+                        {
+                            <option value=@kind.Kind_ID>@kind.kindName</option>
+                        }                 
+                    }
+                </select>
+            </div>
+            @Html.HiddenFor(model => model.Blog_ID)
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

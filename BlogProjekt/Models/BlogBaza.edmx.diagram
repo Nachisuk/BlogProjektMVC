@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4368a6e5c24843d58c17785ed70e83ba" Name="Diagram1" ZoomLevel="73" >
+        <EntityTypeShape EntityType="BlogBaza.Blogs" Width="1.5" PointX="8.125" PointY="5.375" />
+        <EntityTypeShape EntityType="BlogBaza.Kinds" Width="1.5" PointX="8.625" PointY="9.125" />
+        <EntityTypeShape EntityType="BlogBaza.Comments" Width="1.5" PointX="13.875" PointY="3.5" />
+        <EntityTypeShape EntityType="BlogBaza.Post" Width="1.5" PointX="11.125" PointY="4.25" />
+        <EntityTypeShape EntityType="BlogBaza.Tags" Width="1.5" PointX="14.25" PointY="8.5" />
+        <EntityTypeShape EntityType="BlogBaza.Users" Width="1.5" PointX="5" PointY="4.25" />
+        <EntityTypeShape EntityType="BlogBaza.Votes" Width="1.5" PointX="18" PointY="5" />
+        <EntityTypeShape EntityType="BlogBaza.Follows" Width="1.5" PointX="8.25" PointY="2.125" />
+        <AssociationConnector Association="BlogBaza.BlogsKinds" />
+        <AssociationConnector Association="BlogBaza.BlogsPost" />
+        <AssociationConnector Association="BlogBaza.UsersBlogs" />
+        <AssociationConnector Association="BlogBaza.BlogsFollows" />
+        <AssociationConnector Association="BlogBaza.PostComments" />
+        <AssociationConnector Association="BlogBaza.CommentsVotes" />
+        <AssociationConnector Association="BlogBaza.PostTags" />
+        <AssociationConnector Association="BlogBaza.UsersFollows" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,15 @@
+﻿@using BlogProjekt.KlasyPomocnicze
+@model BlogProjekt.Models.Comments
+
+@if (Request.IsAuthenticated)
+{
+    if (!ObsługaBazyDanych.czyUzytkownikGlosowalNaKomentarz(User.Identity.Name, Model.Comment_ID))
+    {
+        <button type="button" style="border: none; background:none;" class="upVoteButton" data-comment-id="@Model.Comment_ID" data-user-name="@User.Identity.Name"><i class="fas fa-plus-square" style="color:forestgreen"></i></button>
+    }
+    else
+    {
+        <button id="b-delete" type="button" style="border: none; background:none;" class="downVoteButton" data-comment-id="@Model.Comment_ID" data-user-name="@User.Identity.Name"><i class="fas fa-plus-square" style="color:red"></i></button>
+    }
+
+}

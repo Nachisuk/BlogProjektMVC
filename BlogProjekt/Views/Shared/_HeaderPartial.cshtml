@@ -1,0 +1,97 @@
+﻿@using BlogProjekt.KlasyPomocnicze;
+@using BlogProjekt.Models;
+
+@{var action = ViewContext.RouteData.Values["action"];
+    var controller = ViewContext.RouteData.Values["controller"];}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <!-- lewy panel -->
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" style="font-family: 'Impact'">
+                <a class="navbar-brand" href=@Url.Action("Index", "Main")>ProjektBlogi</a>
+            </li>
+            <li class="nav-item">
+                <a class=@("nav-link" + (action.ToString().Equals("ListaBlogow") && controller.ToString().Equals("Main")? " active" : ""))
+                   href=@Url.Action("ListaBlogow","Main")>Blogi</a>
+            </li>
+            <li class="nav-item">
+                <a class=@("nav-link" + (action.ToString().Equals("ListaKind") && controller.ToString().Equals("Main")? " active" : ""))
+                   href=@Url.Action("ListaKind","Main")>Rodzaje</a>
+            </li>
+            <li class="nav-item">
+                <a class=@("nav-link" + (action.ToString().Equals("ListaTagow") && controller.ToString().Equals("Main")? " active" : ""))
+                   href=@Url.Action("ListaTagow","Main")>Tagi</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- srodkowy panel -->
+    <div class="mx-auto order-0" style="font-family: 'Arial Black'">
+        @if (ViewBag.BlogID != null)
+        {<text>
+            @{Blogs tmp = ObsługaBazyDanych.zwrocBlogPoId(ViewBag.BlogID);}
+            <a class="navbar-brand mx-auto" href="@Url.Action("WyswietlBlog", "Main", new { id = tmp.Blog_ID})">@tmp.nazwa</a>
+        </text>}
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <!-- prawy panel -->
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        @if (!controller.ToString().Equals("Authorization") || action.ToString().Equals("Register")/*||action.ToString(update_account)*/)
+        {<text>
+                <ul class="navbar-nav ml-auto">
+                    @if (Request.IsAuthenticated)
+                    {<text>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Witaj @User.Identity.Name
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href=#>
+                                        <!--href = edutujUsera-->
+                                        Edytuj profil
+                                    </a>
+
+                                    @if (ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
+                                    {<text>
+                                            <a class="dropdown-item" href=@Url.Action("ListaUzytkownikow", "Main")>
+                                                Użytkownicy
+                                            </a>
+                                    </text>}
+
+                                    @{ List<Blogs> listaBlogow = ObsługaBazyDanych.zwrocListeBlogowUzytkownika(User.Identity.Name);}
+                                    @if (listaBlogow.Count != 0)
+                                    {<text>
+                                            <hr>
+                                        @foreach (var x in listaBlogow)
+                                        {
+                                            <a class="dropdown-item" href=@Url.Action("WyswietlBlog", "Main", new { id = x.Blog_ID})>
+                                                @x.nazwa
+                                            </a>
+                                        }
+                                            
+                                    </text>}
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href=@Url.Action("LogOut","Authorization")>
+                                    Wyloguj
+                                </a>
+                            </li>
+                    </text>}
+                    else {
+                            <li class="nav-item">
+                                <a class="nav-link" href=@Url.Action("LogIn","Authorization")>
+                                    Zaloguj
+                                </a>
+                            </li>
+                    }
+                </ul>
+        </text>}
+    </div>
+</nav>

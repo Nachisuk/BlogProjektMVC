@@ -1,0 +1,247 @@
+﻿@model BlogProjekt.Models.Post
+@using BlogProjekt.KlasyPomocnicze;
+@{
+    ViewBag.BlogID = Model.BlogsBlog_ID;
+    ViewBag.Title = "WyswietlPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <h4>Post</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Post_ID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Post_ID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.dataStworzenia)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.dataStworzenia)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ifTop)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ifTop)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.dataAktualizacji)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.dataAktualizacji)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.text_content)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.text_content)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.img_route)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.img_route)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.title)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.image_file_name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.image_file_name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.image_content_type)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.image_content_type)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.image_file_size)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.image_file_size)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.image_upload_Date)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.image_upload_Date)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BlogsBlog_ID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BlogsBlog_ID)
+            </dd>
+
+        </dl>
+    </div>
+
+    <div id="#comments">
+        @if (Model.Comments.Count > 0)
+        {
+            foreach (var comment in Model.Comments)
+            {
+                <text>
+                    <div class="card">
+                        <div class="card-header">
+                            <small>Dodany przez: @comment.Post.Blogs.Users.username</small>
+
+                            <div class="float-right row">
+                                <div class="col">
+                                    <div style="float:left">
+                                        @if (Request.IsAuthenticated && ((comment.User_ID == ObsługaBazyDanych.zwrocIdUzytkownikaPoUsername(User.Identity.Name)) || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                        {<text>
+                                                <a style="text-decoration: none;color: inherit;" onclick="return confirm('Czy na pewno chcesz usunąć ten komentarz?');" href=@Url.Action("UsunKomentarz", "Main", new { id = comment.Comment_ID, idPostu = comment.Post.Post_ID})>
+                                                    <i class="fas fa-trash-alt" style="color:red"></i>
+                                                </a>
+                                        </text>}
+                                    </div>
+
+                                </div>
+
+                                <div class="col" style="display:flex">
+                                    <div id="button_@comment.Comment_ID" style="margin-right:2px">
+                                        @Html.Partial("commentsPartial", comment)
+                                    </div>
+                                    <div id="com_@comment.Comment_ID">
+                                        <span>@comment.upVotes</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <p>
+                                @comment.content
+                            </p>
+                        </div>
+                    </div>
+
+                </text>
+            }
+        }
+    </div>
+
+    <p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a href=@Url.Action("StworzKomentarz","Main", new {id = Model.Post_ID })>Dodaj Komentarz</a>
+        }
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
+
+<script>
+    $(function () {
+        $('body').on("click", ".upVoteButton", function () {
+            var $button = $(this);
+            var href = '@Url.Action("komentarzUpVote","Main")';
+            var args = {
+                userName: $(this).data('user-name'),
+                commentID: $(this).data('comment-id')
+            };
+
+            $.ajax({
+                type: "GET",
+                url: href, // url of your action
+                data: args, // parameters if available
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var string = "com_" + data.id;
+                    $("#" + string).html(data.upVotes);
+
+                    var string1 = "button_" + data.id;
+                    $("#" + string1).load('@(Url.Action("commentPartialView", "Main",null, Request.Url.Scheme))?commentId=' + data.id);
+
+
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error");
+                }
+            });
+        });
+
+        $('body').on("click", ".downVoteButton", function () {
+            var $button = $(this);
+            var href = '@Url.Action("komentarzDownVote","Main")';
+            var args = {
+                userName: $(this).data('user-name'),
+                commentID: $(this).data('comment-id')
+            };
+
+            $.ajax({
+                type: "GET",
+                url: href, // url of your action
+                data: args, // parameters if available
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var string = "com_" + data.id;
+                    $("#" + string).html(data.upVotes);
+
+                    var string1 = "button_" + data.id;
+                    $("#" + string1).load('@(Url.Action("commentPartialView", "Main",null, Request.Url.Scheme))?commentId=' + data.id);
+
+
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error");
+                }
+            });
+        });
+    })
+
+
+</script>
+
+
