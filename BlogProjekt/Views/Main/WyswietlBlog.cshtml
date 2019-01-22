@@ -7,12 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>WyswietlBlog</h2>
-
 <div>
-    <h4>Blogs</h4>
-    <hr />
-
     <dl class="dl-horizontal">
         <div class="col" style="display:flex">
             <div id="blog_@Model.Blog_ID" style="margin-right:2px">
@@ -22,49 +17,6 @@
                 <span>@Model.followCount</span>
             </div>
         </div>
-        <dt>
-            @Html.DisplayNameFor(model => model.Blog_ID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Blog_ID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.dataZalozenia)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.dataZalozenia)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.dataAktualizacji)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.dataAktualizacji)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.nazwa)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.nazwa)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UsersUser_ID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UsersUser_ID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.followCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.followCount)
-        </dd>
-    </dl>
 </div>
 <div class="col-10">
     @if (Model.Post.Count > 0)
