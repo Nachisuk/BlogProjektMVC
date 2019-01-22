@@ -223,6 +223,13 @@ namespace BlogProjekt.Controllers
             return Json(new { followCount = blog.followCount, id = blog.Blog_ID, user = userName }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult renderPostView(string id)
+        {
+            Debug.WriteLine("Witam po udanym poście"+id);
+            return Json(new { id1 = id }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult commentPartialView(string commentId)
         {

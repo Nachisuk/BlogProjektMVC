@@ -396,6 +396,7 @@ namespace BlogProjekt.KlasyPomocnicze
             tmpPost.ifTop = post.ifTop;
             tmpPost.image_file_name = post.image_file_name;
             tmpPost.img_route = post.img_route;
+            if (tmpPost.img_route is null) tmpPost.img_route = "htttp?";
             tmpPost.title = post.title;
             tmpPost.text_content = post.text_content;
 

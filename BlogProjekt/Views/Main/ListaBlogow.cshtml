@@ -15,48 +15,46 @@
 
             @foreach (var item in Model)
             {<text>
-            <div class="card" style="margin:4px">
-                <div class="card-body">
-                    <h4 class="card-title">@item.nazwa</h4>
-                    <p class="card-text">Założony przez użytkownika: <em>@item.Users.username</em></p>
-                    <p>
-                        @foreach(var kind in item.Kinds)
-                        {
-                            <span class="badge badge-pill badge-secondary"> #@kind.kindName </span>
-                        }
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col">
-                            <small class="text-muted">Założony dnia: @(item.dataZalozenia.ToString("dd.M.yyyy") + "r.")<!--<%= blog.dataZalozenia.strftime("%d.%m.%Yr.") %>--></small>
-                        </div>
-                        <div class="col">
-                            <div class="float-right">
-                                <a href=@Url.Action("WyswietlBlog", "Main", new { id = item.Blog_ID})>
-                                    <button type="button" class="btn btn-primary">Przejdź</button>
-                                </a>
-
-                                @if(Request.IsAuthenticated && (User.Identity.Name == item.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
-                                {<text>
-                                <a href=@Url.Action("EdytujBlog", "Main", new { id = item.Blog_ID })>
-                                    <button type="button" class="btn btn-primary">Edytuj</button>
-                                </a>
-                                <a onclick="return confirm('Czy na pewno chcesz usunąć ten blog?');" href=@Url.Action("UsunBlog", "Main", new { id = item.Blog_ID })>
-                                    <button type="button" class="btn btn-primary">Usuń</button>
-                                </a>
-
-                                </text>}
+            <div class="blogClickHandler" data-blog-id="@item.Blog_ID">
+                <div class="card" style="margin:4px">
+                    <div class="card-body">
+                        <h4 class="card-title">@item.nazwa</h4>
+                        <p class="card-text">Założony przez użytkownika: <em>@item.Users.username</em></p>
+                        <p>
+                            @foreach (var kind in item.Kinds)
+                            {
+                                <span class="badge badge-pill badge-secondary"> #@kind.kindName </span>
+                            }
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col">
+                                <small class="text-muted">Założony dnia: @(item.dataZalozenia.ToString("dd.M.yyyy") + "r.")<!--<%= blog.dataZalozenia.strftime("%d.%m.%Yr.") %>--></small>
+                            </div>
+                            <div class="col">
+                                <div class="float-right">
+                                    <a href=@Url.Action("WyswietlBlog", "Main", new { id = item.Blog_ID})>
+                                        <button type="button" class="btn btn-primary">Przejdź</button>
+                                    </a>
+                                    @if (Request.IsAuthenticated && (User.Identity.Name == item.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                    {<text>
+                                            <a href=@Url.Action("EdytujBlog", "Main", new { id = item.Blog_ID })>
+                                                <button type="button" class="btn btn-primary">Edytuj</button>
+                                            </a>
+                                            <a onclick="return confirm('Czy na pewno chcesz usunąć ten blog?');" href=@Url.Action("UsunBlog", "Main", new { id = item.Blog_ID })>
+                                                <button type="button" class="btn btn-primary">Usuń</button>
+                                            </a>
+                                    </text>}
+                                </div>
                             </div>
 
                         </div>
 
-
                     </div>
-
-
                 </div>
             </div>
+            
             </text>}
 
         </div>
@@ -72,3 +70,35 @@
 
 
 </div>
+
+<script>
+    $(function () {
+          //Dodaje nam obsługe kliknięcia diva
+        $('body').on("click", ".blogClickHandler", function () {
+            // var id = $(this).data("post-id");
+            //  var targetURL = '/Main/WyswietlPost/' + id.toString();
+            //  alert(id);
+            //  $(document.body).load(targetURL);
+            var href = '@Url.Action("renderPostView","Main")';
+            var args = { id: $(this).data("blog-id") };
+            $.ajax({
+                type: "POST",
+                url: '/Main/renderPostView', // url of your action
+                data: args, // parameters if available
+                success: function (data) {
+ 
+                    window.location.href = '@Url.Action("WyswietlBlog","Main")/' + data.id1;
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error");
+                }
+
+            })
+
+        })
+        //Blogkuje kliknięcie diva, gdy klikamy na przycisk
+        $(".blogClickHandler a").click(function (e) {
+            e.stopPropagation();
+        })
+    })
+</script>
