@@ -35,7 +35,7 @@
                     <p>
                         <label>Treść</label>
                         <br />
-                        @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control", @size = 200, id = "postContent" } })
+                        @Html.TextAreaFor(model => model.text_content, new {  @class = "form-control", id = "postContent" } )
                     </p>
                 </div>
 
@@ -46,18 +46,34 @@
                         @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control", id = "postImgRoute" } })
                     </p>
                 </div>
+                <div>
+                    <div class="form-group">
 
-                <div class="form-group">
-                    <label>Tagi postu</label>
-                    <br />
-                    <select id="tags1" class="selectpicker" name="TagsIds" multiple data-live-search="true" title="Dodaj tagi postu">
-                        @foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
-                        {
-                            <option value=@tag.Tag_ID>@tag.tagName</option>
-                        }
-                    </select>
-                    <div style="float:right"><span id="toggleAddTag">Chcesz dodać nowy tag? Kliknij!</span></div>
+                        <label>Tagi postu</label>
+                        <br />
+                        <div style="float:right">
+                            <span id="toggleAddTag">Chcesz dodać nowy tag? <b>Kliknij!</b></span>
+                            <div id="addTagForm">
+
+                                <label>Wpisz nazwe tagu</label>
+                                <input class="form-control" type="text" id="label" name="TagName" value="" />
+                                <button type="button" id="addTag" class="btn btn-success" style="margin-top:5px">Dodaj!</button>
+
+                            </div>
+                        </div>
+                        <select id="tags1" class="selectpicker" name="TagsIds" multiple data-live-search="true" title="Dodaj tagi postu">
+                            @foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
+                            {
+                                <option value=@tag.Tag_ID>@tag.tagName</option>
+                            }
+                        </select>
+
+                    </div>
+                    
+                    
+                    
                 </div>
+                
 
 
                 <p>
@@ -68,11 +84,7 @@
         </div>
 
         <div class="col">
-            <div id="addTagForm">
-                <p><strong>Wpisz nazwe tagu</strong></p>
-                <input class="form-control" type="text" id="label" name="TagName" value="" />
-                <button type="button" id="addTag" class="btn btn-success" style="margin-top:5px">Dodaj!</button>
-            </div>
+            
         </div>
     </div>
 </div>
