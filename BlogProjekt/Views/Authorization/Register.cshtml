@@ -106,7 +106,6 @@
         $("#submitButton").click(function (e) {
             var isCorrect = true;
 
-            alert($("#pasword").val())
             $("#errorMessage").html('');
 
             if ($("#username").val() == '') {
@@ -115,19 +114,19 @@
                 isCorrect = false;
             }
 
-            if ($("#pasword").val() == '') {
+            if ($("#password").val() == "") {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Wpisz hasło!</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
             }
 
-            if ($("#pasword2").val() == '') {
+            if ($("#password2").val() == "") {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Wpisz potwierdznie hasła!</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
             }
 
-            if ($("#pasword").val() !== $("#pasword2").val()) {
+            if ($("#password").val() != $("#password2").val()) {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Hasła są różne</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
