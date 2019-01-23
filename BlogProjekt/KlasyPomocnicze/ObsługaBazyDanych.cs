@@ -123,15 +123,19 @@ namespace BlogProjekt.KlasyPomocnicze
         public static void dodajPost(int id, Post post, string test)
         {
             Debug.WriteLine(test);
-            string[] tmpArray = test.Split(',');
-            foreach(var i in tmpArray)
+            if(!String.IsNullOrEmpty(test))
             {
-                if(i != ",")
+                string[] tmpArray = test.Split(',');
+                foreach (var i in tmpArray)
                 {
-                    int id1 = Int32.Parse(i.ToString());
-                    post.Tags.Add(bazadanych.TagsSet.FirstOrDefault(tag => tag.Tag_ID == id1));
+                    if (i != ",")
+                    {
+                        int id1 = Int32.Parse(i.ToString());
+                        post.Tags.Add(bazadanych.TagsSet.FirstOrDefault(tag => tag.Tag_ID == id1));
+                    }
                 }
             }
+            
             Blogs tmpBlog = bazadanych.BlogsSet.FirstOrDefault(blog => blog.Blog_ID == id);
             post.dataAktualizacji = DateTime.Now;
             post.dataStworzenia = DateTime.Now;

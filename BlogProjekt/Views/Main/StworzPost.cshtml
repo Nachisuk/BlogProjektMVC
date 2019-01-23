@@ -13,6 +13,9 @@
         </div>
         <div class="col-6">
 
+            <div id="errorMessage">
+
+            </div>
 
             @using (Html.BeginForm())
             {
@@ -24,7 +27,7 @@
                     <p>
                         <label>Tytuł postu</label>
                         <br />
-                        @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control", id = "postName"} })
                     </p>
                 </div>
 
@@ -32,7 +35,7 @@
                     <p>
                         <label>Treść</label>
                         <br />
-                        @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control", @size = 200 } })
+                        @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control", @size = 200, id = "postContent" } })
                     </p>
                 </div>
 
@@ -40,9 +43,7 @@
                     <p>
                         <label>Obrazek</label>
                         <br />
-                        @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control" } })
-                        <br />
-                        @Html.EditorFor(model => model.image_file_name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control", id = "postImgRoute" } })
                     </p>
                 </div>
 
@@ -55,21 +56,22 @@
                             <option value=@tag.Tag_ID>@tag.tagName</option>
                         }
                     </select>
+                    <div style="float:right"><span id="toggleAddTag">Chcesz dodać nowy tag? Kliknij!</span></div>
                 </div>
 
 
                 <p>
-                    <input type="submit" value="Dodaj post" class="btn btn-success" />
+                    <input id="submitButton" type="submit" value="Dodaj post" class="btn btn-success" />
                 </p>
             }
 
         </div>
 
         <div class="col">
-            <div>
-                <p><strong>Twój tag nie istnieje na liście? Dodaj go i bądź szczęśliwym człowiekiem</strong></p>
-                <input type="text" id="label" name="TagName" value="" />
-                <button type="button" id="addTag"></button>
+            <div id="addTagForm">
+                <p><strong>Wpisz nazwe tagu</strong></p>
+                <input class="form-control" type="text" id="label" name="TagName" value="" />
+                <button type="button" id="addTag" class="btn btn-success" style="margin-top:5px">Dodaj!</button>
             </div>
         </div>
     </div>
@@ -80,23 +82,30 @@
 
 <script>
     $(document).ready(function () {
+        $('#addTagForm').hide();
         $('.selectpicker').selectpicker('render');
 
         $('#addTag').click(function () {
-            alert($('#label').val());
+
+            if ($('#label').val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Tag nie może być pusty!!</div>');
+                $("#errorMessage").append(errorText);
+                return false;
+            }
+            $("#errorMessage").html('');
+            $('#addTagForm').hide();
             var link = '@Url.Action("stworztagasync","Main")';
             var args = {
                 tagName: $('#label').val()
-            }
+            };
 
+            $('#label').val('');
             $.ajax({
                 type: "GET",
                 url: link, // url of your action
                 data: args, // parameters if available
                 dataType: "json",
                 success: function (data) {
-
-                    alert("Tag dodany");
                     $('.selectpicker').append(new Option(data.nazwa, data.id));
                     $('.selectpicker').selectpicker('refresh');
                 },
@@ -106,6 +115,33 @@
             });
 
         });
+
+        $("#submitButton").click(function (e) {
+            var isCorrect = true;
+
+            $("#errorMessage").html('');
+
+            if ($("#postName").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole nazwy nie może być puste!!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#postContent").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Treść postu nie może być pusta!!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if (!isCorrect) {
+                return false;
+            }
+
+        });
+
+        $("#toggleAddTag").click(function () {
+            $('#addTagForm').toggle('slow');
+        })
     });
 
 </script>
