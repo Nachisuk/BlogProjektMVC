@@ -478,5 +478,13 @@ namespace BlogProjekt.KlasyPomocnicze
             return followedBlogPosts.OrderByDescending(post => post.dataStworzenia).ToList();
             
         }
+
+        public static List<Follows> zwrocFollowanychBlogow(string username)
+        {
+            Users user = bazadanych.UsersSet.FirstOrDefault(user1 => user1.username == username);
+ 
+            return user.Follows.ToList();
+
+        }
     }
 }

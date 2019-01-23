@@ -8,24 +8,24 @@
 }
 
 <div class="container" style="height: 100%; width: 100%">
-    <div>
-        <dl class="dl-horizontal">
-            <div class="col" style="display:flex">
-                <div id="blog_@Model.Blog_ID" style="margin-right:2px">
-                    @Html.Partial("blogFollowButton", Model)
-                </div>
-                <span class="btn btn-dark">
-                    <div id="com_@Model.Blog_ID">
-                        <span>@Model.followCount</span>
-                    </div>
-                </span>
-               
-            </div>
-    </div>
+    
 
     <div class="row">
         <div class="col">
+            <div>
+                <dl class="dl-horizontal">
+                    <div class="col" style="display:flex">
+                        <div id="blog_@Model.Blog_ID" style="margin-right:2px">
+                            @Html.Partial("blogFollowButton", Model)
+                        </div>
+                        <span class="btn btn-dark">
+                            <div id="com_@Model.Blog_ID">
+                                <span>@Model.followCount</span>
+                            </div>
+                        </span>
 
+                    </div>
+            </div>
         </div>
 
         <div class="col-10">
