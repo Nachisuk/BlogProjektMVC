@@ -292,5 +292,17 @@ namespace BlogProjekt.Controllers
             return RedirectToAction("ListaBlogow");
         }
 
+        public ActionResult UsunKind(int id)
+        {
+            ObsługaBazyDanych.UsunKind(id);
+            return RedirectToAction("ListaKind");
+        }
+
+        public ActionResult UsunTag(int id)
+        {
+            ObsługaBazyDanych.UsunTag(id);
+            return RedirectToAction("ListaTagow");
+        }
+
     }
 }

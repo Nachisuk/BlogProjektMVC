@@ -299,6 +299,11 @@ namespace BlogProjekt.KlasyPomocnicze
             return tag.Post.Count();
         }
 
+        public static int ileBlogowPodRodzajem(Kinds kind)
+        {
+            return kind.Blogs.Count();
+        }
+
 
         public static Comments zwrocKomentarzPoID(int id)
         {
@@ -424,6 +429,30 @@ namespace BlogProjekt.KlasyPomocnicze
             tmpPost.Tags = post.Tags;
             bazadanych.SaveChanges();
 
+        }
+
+        public static Kinds ZnajdzKindPoId(int id)
+        {
+            return bazadanych.KindsSet.FirstOrDefault(item => item.Kind_ID == id);
+        }
+        public static Tags ZnajdzTagPoId(int id)
+        {
+            return bazadanych.TagsSet.FirstOrDefault(item => item.Tag_ID == id);
+        }
+        public static void UsunKind(int id)
+        {
+            var kind = ZnajdzKindPoId(id);
+
+            bazadanych.KindsSet.Remove(kind);
+            bazadanych.SaveChanges();
+        }
+
+        public static void UsunTag(int id)
+        {
+            var tag = ZnajdzTagPoId(id);
+
+            bazadanych.TagsSet.Remove(tag);
+            bazadanych.SaveChanges();
         }
     }
 }

@@ -1,53 +1,82 @@
 ﻿@model IEnumerable<BlogProjekt.Models.Kinds>
-
+@using BlogProjekt.KlasyPomocnicze;
 @{
-   
+
     ViewBag.Title = "ListaKind";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ListaKind</h2>
+@if (Request.IsAuthenticated && ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
+{<text>
+        <div class="row">
+            <div class="col">
+                <h1>Rodzaje</h1>
+            </div>
+            <div class="col-10">
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Kind_ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.kindName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataStworzenia)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataAktualizacji)
-        </th>
-        <th></th>
-    </tr>
+            </div>
+            <div class="col">
+                <a href=@Url.Action("StworzKind","Main")>
+                    <button type="button" class="btn btn-dark">Nowy rodzaj</button>
+                </a>
+            </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Kind_ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.kindName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataStworzenia)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataAktualizacji)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+        </div>
 
-</table>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nazwa</th>
+                    <th scope="col">Ilość blogów</th>
+                    <th scope="col"></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">
+                            @Html.DisplayFor(modelItem => item.Kind_ID)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.kindName)
+                        </td>
+                        <td>
+                            @ObsługaBazyDanych.ileBlogowPodRodzajem(item)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+
+                            <a href= @Url.Action("UsunKind", "Main", new { id = item.Kind_ID })>Usuń</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+</text>}
+else
+{<text>
+    @{
+        int iter = 0;
+        int dziel = 5;
+    }
+    <div class="text-center ">
+        @foreach (var item in Model)
+        {<text>
+                <a href=@Url.Action("WyswietlTagowane", "WyswietlTagowane", new {/* id = item.PrimaryKey */}) event.stopPropagation();>
+                    <button type="button" class="btn btn-primary">#@item.kindName</button>
+                </a>
+
+                @if (++iter == dziel)
+                {<text>
+                        <br /> <br />
+                        @{ iter = 0; dziel = (dziel == 5) ? 4 : 5;}
+                </text>}
+        </text>}
+    </div>
+</text>}
