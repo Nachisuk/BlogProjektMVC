@@ -1,0 +1,96 @@
+﻿@model IEnumerable<BlogProjekt.Models.Post>
+@using BlogProjekt.KlasyPomocnicze;
+@{
+    ViewBag.Title = "PostyFollowedBlogs";
+}
+
+<div class="col-10">
+    @if (Model.Count() > 0)
+    {
+        foreach (var post in Model)
+        {<text>
+                <div class="postClickHandler" data-post-id="@post.Post_ID">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h2>@post.title</h2>
+                        </div>
+                        <div style="max-height:320px;overflow:hidden">
+                            <img class="img-fluid card-img-top" id="img-details" src="@post.img_route" alt="Alternate Text" />
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                                @post.text_content
+                            </p>
+                            <p>
+                                @foreach (var tag in post.Tags)
+                                {
+                                    <span class="badge badge-pill badge-secondary"> #@tag.tagName </span>
+                                }
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col">
+                                    <small class="text-muted">
+                                        Opublikowane dnia: @(post.dataStworzenia.ToString("dd.M.yyyy") + "r.")
+                                    </small>
+                                </div>
+                                <div class="col">
+                                    <div class="float-right">
+                                        <a href=@Url.Action("WyswietlPost", "Main", new { id = post.Post_ID})>
+                                            <button type="button" class="btn btn-primary">Przejdź</button>
+                                        </a>
+                                        @if (Request.IsAuthenticated && (User.Identity.Name == post.Blogs.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                        {<text>
+                                                <a href=@Url.Action("EdytujPost", "Main", new {id = post.Post_ID}) event.stopPropagation();>
+                                                    <button type="button" class="btn btn-primary">Edytuj</button>
+                                                </a>
+                                                <a onclick="return confirm('Czy na pewno chcesz usunąć ten post?');" href=@Url.Action("UsunPost", "Main", new { id = post.Post_ID, idBlog = post.BlogsBlog_ID }) event.stopPropagation();>
+                                                    <button type="button" class="btn btn-primary">Usuń</button>
+                                                </a>
+                                        </text>}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+        </text>}
+}
+    <script>
+    $(function () {
+        //Dodaje nam obsługe kliknięcia diva
+        $('body').on("click", ".postClickHandler", function () {
+            // var id = $(this).data("post-id");
+            //  var targetURL = '/Main/WyswietlPost/' + id.toString();
+            //  alert(id);
+            //  $(document.body).load(targetURL);
+            var href = '@Url.Action("renderPostView","Main")';
+            var id1 = $(this).data("post-id");
+            var args = { id: $(this).data("post-id") };
+            $.ajax({
+                type: "POST",
+                url: '/Main/renderPostView', // url of your action
+                data: args, // parameters if available
+                success: function (data) {
+
+                    window.location.href = '@Url.Action("WyswietlPost","Main")/' + data.id1;
+                },
+                error: function (httpRequest, textStatus, errorThrown) {
+                    alert("Error");
+                }
+
+            })
+
+        })
+        //Blogkuje kliknięcie diva, gdy klikamy na przycisk
+        $(".postClickHandler a").click(function (e) {
+            e.stopPropagation();
+        })
+    })
+
+
+    </script>
