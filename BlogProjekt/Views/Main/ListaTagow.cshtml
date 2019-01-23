@@ -52,7 +52,7 @@
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            <a href=@Url.Action("ListaPostowPoTagu", "Main", new {id = item.Tag_ID})> Lista tag</a> |
                             <a href=@Url.Action("UsunTag", "Main", new { id = item.Tag_ID })>Usuń</a>
                         </td>
                     </tr>
@@ -70,7 +70,7 @@ else
         <div class="text-center ">
             @foreach (var item in Model)
             {<text>
-                    <a href=@Url.Action("WyswietlTagowane", "WyswietlTagowane", new {/* id = item.PrimaryKey */}) event.stopPropagation();>
+                    <a href=@Url.Action("ListaPostowPoTagu", "Main", new {id = item.Tag_ID}) event.stopPropagation();>
                         <button type="button" class="btn btn-primary">#@item.tagName</button>
                     </a>
 

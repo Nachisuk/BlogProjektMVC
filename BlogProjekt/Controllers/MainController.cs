@@ -58,6 +58,17 @@ namespace BlogProjekt.Controllers
             return View(listablogow);
         }
 
+        public ActionResult ListaBlogowPoKind(int id)
+        {
+            var listablogow = ObsługaBazyDanych.zwrocBlogiDanegoKind(id);
+            return View("ListaBlogow", listablogow);
+        }
+
+        public ActionResult ListaPostowPoTagu(int id)
+        {
+            var listapostow = ObsługaBazyDanych.zwrocPostyDanegoTagu(id);
+            return View(listapostow);
+        }
         [Authorize]
         public ActionResult ListaBlogowUzytkownika(string username)
         {

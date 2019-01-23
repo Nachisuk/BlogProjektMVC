@@ -454,5 +454,15 @@ namespace BlogProjekt.KlasyPomocnicze
             bazadanych.TagsSet.Remove(tag);
             bazadanych.SaveChanges();
         }
+
+        public static List<Blogs> zwrocBlogiDanegoKind(int id)
+        {
+            return bazadanych.BlogsSet.Where(blog => blog.Kinds.Any(kind => kind.Kind_ID == id)).ToList();
+        }
+
+        public static List<Post> zwrocPostyDanegoTagu(int id)
+        {
+            return bazadanych.PostSet.Where(post => post.Tags.Any(tag => tag.Tag_ID == id)).ToList();
+        }
     }
 }

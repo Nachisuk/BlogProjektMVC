@@ -350,6 +350,7 @@
     <Content Include="Views\Main\EdytujBlog.cshtml" />
     <Content Include="Views\Main\EdytujPost.cshtml" />
     <Content Include="Views\Main\blogFollowButton.cshtml" />
+    <Content Include="Views\Main\ListaPostowPoTagu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
