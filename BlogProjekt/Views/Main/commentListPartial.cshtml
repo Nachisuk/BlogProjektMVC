@@ -1,0 +1,47 @@
+﻿@using BlogProjekt.KlasyPomocnicze
+@model BlogProjekt.Models.Post
+
+@if (Model.Comments.Count > 0)
+{
+    foreach (var comment in Model.Comments)
+    {
+        <text>
+            <div class="card" style="margin-bottom:8px">
+                <div class="card-header">
+                    <small>Dodany przez: @comment.Post.Blogs.Users.username</small>
+
+                    <div class="float-right row">
+                        <div class="col">
+                            <div style="float:left">
+                                @if (Request.IsAuthenticated && ((comment.User_ID == ObsługaBazyDanych.zwrocIdUzytkownikaPoUsername(User.Identity.Name)) || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                {<text>
+                                        <a style="text-decoration: none;color: inherit;" onclick="return confirm('Czy na pewno chcesz usunąć ten komentarz?');" href=@Url.Action("UsunKomentarz", "Main", new { id = comment.Comment_ID, idPostu = comment.Post.Post_ID})>
+                                            <i class="fas fa-trash-alt" style="color:red"></i>
+                                        </a>
+                                </text>}
+                            </div>
+
+                        </div>
+
+                        <div class="col" style="display:flex">
+                            <div id="button_@comment.Comment_ID" style="margin-right:2px">
+                                @Html.Partial("commentsPartial", comment)
+                            </div>
+                            <div id="com_@comment.Comment_ID">
+                                <span>@comment.upVotes</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <p>
+                        @comment.content
+                    </p>
+                </div>
+            </div>
+
+        </text>
+    }
+}

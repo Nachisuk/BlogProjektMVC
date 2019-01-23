@@ -159,6 +159,20 @@ namespace BlogProjekt.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult StworzKomentarzJava(int id, string content)
+        {
+            Debug.WriteLine(id + content);
+
+            Comments comment = new Comments();
+
+            comment.content = content;
+            comment.User_ID = ObsługaBazyDanych.zwrocIdUzytkownikaPoUsername(User.Identity.Name);
+            ObsługaBazyDanych.dodajKomentarz(id, comment);
+
+            return Json(new { id1 = id}, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult StworzKind()
         {
             return View();
@@ -256,6 +270,13 @@ namespace BlogProjekt.Controllers
             return PartialView("commentsPartial", model);
         }
 
+        [HttpGet]
+        public ActionResult commentListPartialView(string postID)
+        {
+            Debug.WriteLine(postID);
+            var post = ObsługaBazyDanych.zwrocPostPoId(Int32.Parse(postID));
+            return PartialView("commentListPartial", post);
+        }
         [HttpGet]
         public ActionResult blogPartialView(string blogID)
         {
