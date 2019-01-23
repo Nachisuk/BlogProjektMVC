@@ -5,103 +5,77 @@
     ViewBag.Title = "StworzPost";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
 
-</head>
-<body>
-    <h2>StworzPost</h2>
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>Post</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-6">
 
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <h1>Utwórz post</h1>
+                <div class="form-group">
+                    <p>
+                        <label>Tytuł postu</label>
+                        <br />
+                        @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                    </p>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.text_content, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.text_content, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <p>
+                        <label>Treść</label>
+                        <br />
+                        @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control", @size = 200 } })
+                    </p>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ifTop, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.ifTop)
-                        @Html.ValidationMessageFor(model => model.ifTop, "", new { @class = "text-danger" })
-                    </div>
+                <div class="form-group">
+                    <p>
+                        <label>Obrazek</label>
+                        <br />
+                        @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control" } })
+                        <br />
+                        @Html.EditorFor(model => model.image_file_name, new { htmlAttributes = new { @class = "form-control" } })
+                    </p>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.img_route, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.img_route, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.image_file_name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.image_file_name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.image_file_name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="custom-control-label">Tagi postu</label>
-                <div id="select1" class="col-md-10">
+                <div class="form-group">
+                    <label>Tagi postu</label>
+                    <br />
                     <select id="tags1" class="selectpicker" name="TagsIds" multiple data-live-search="true" title="Dodaj tagi postu">
                         @foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
-                            {
+                        {
                             <option value=@tag.Tag_ID>@tag.tagName</option>
-                            }
+                        }
                     </select>
                 </div>
-            </div>
 
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
+                <p>
+                    <input type="submit" value="Dodaj post" class="btn btn-success" />
+                </p>
+            }
+
+        </div>
+
+        <div class="col">
+            <div>
+                <p><strong>Twój tag nie istnieje na liście? Dodaj go i bądź szczęśliwym człowiekiem</strong></p>
+                <input type="text" id="label" name="TagName" value="" />
+                <button type="button" id="addTag"></button>
             </div>
         </div>
-    }
-
-    <div>
-        <p><strong>Twój tag nie istnieje na liście? Dodaj go i bądź szczęśliwym człowiekiem</strong></p>
-        <input type="text" id="label" name="TagName" value="" />
-        <button type="button" id="addTag"></button>
     </div>
+</div>
 
 
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
-
-</body>
-</html>
 
 
 <script>
