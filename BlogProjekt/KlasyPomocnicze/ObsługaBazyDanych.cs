@@ -142,7 +142,15 @@ namespace BlogProjekt.KlasyPomocnicze
             post.image_content_type = "nop";
             post.image_file_size = 10;
             post.image_upload_Date = DateTime.Now;
-            post.status = "Jak rafonix kiedys znowu wymysli takie pole to go zabije";
+            post.status = "Jak";
+            if (String.IsNullOrEmpty(post.img_route))
+            {
+                post.img_route = "htttp?";
+            }
+            if(String.IsNullOrEmpty(post.image_file_name))
+            {
+                post.image_file_name = "" + post.Post_ID + post.title;
+            }
  
             //post.Blogs = tmpBlog;
             //post.BlogsBlog_ID = tmpBlog.Blog_ID;
@@ -228,6 +236,10 @@ namespace BlogProjekt.KlasyPomocnicze
         public static void usunKomentarz(int id)
         {
             var tmpKomentarz = bazadanych.CommentsSet.FirstOrDefault(comments => comments.Comment_ID == id);
+            if(tmpKomentarz is null)
+            {
+                return;
+            }
             var vps = bazadanych.VotesSet.Where(vote => vote.CommentsComment_ID == id).ToList();
 
             foreach(var tmpVote in vps)

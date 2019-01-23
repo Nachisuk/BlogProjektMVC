@@ -34,7 +34,10 @@
                             </div>
 
                             <div style="max-height: 320px;overflow: hidden;">
-                                <img class="img-fluid card-img-top" id="img-details" src="@post.img_route" alt="Alternate Text" />
+                                @if (!post.img_route.Equals("htttp?"))
+                                {
+                                    <img class="img-fluid card-img-top" id="img-details" src="@post.img_route" alt="Błąd wczytywania obrazka" />
+                                }
                             </div>
 
                             <div class="card-body">

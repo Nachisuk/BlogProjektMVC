@@ -40,9 +40,6 @@
                             </div>
                             <div class="col">
                                 <div class="float-right">
-                                    <a href=@Url.Action("WyswietlBlog", "Main", new { id = item.Blog_ID})>
-                                        <button type="button" class="btn btn-primary">Przejdź</button>
-                                    </a>
                                     @if (Request.IsAuthenticated && (User.Identity.Name == item.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
                                     {<text>
                                             <a href=@Url.Action("EdytujBlog", "Main", new { id = item.Blog_ID })>

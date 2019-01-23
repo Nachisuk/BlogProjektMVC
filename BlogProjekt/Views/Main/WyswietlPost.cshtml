@@ -26,7 +26,11 @@
                 </div>
 
                 <div class="text-center">
-                    <img src="@Model.img_route" alt="Alternate Text" style=" width:90%;margin-bottom:20px;"/>
+                    @if (!Model.img_route.Equals("htttp?"))
+                    {
+                        <img src="@Model.img_route" alt="Alternate Text" style=" width:90%;margin-bottom:20px;" />
+                    }
+
                 </div>
 
                 <div class="card-body">
