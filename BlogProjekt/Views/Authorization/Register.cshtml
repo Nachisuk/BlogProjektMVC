@@ -13,74 +13,176 @@
     <title>StworzUzytkownika</title>
 </head>
 <body>
-    @using (Html.BeginForm())
-    {
-
-
-        <div class="form-horizontal">
-            <h4>Users</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.username, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
             </div>
+            <div class="col-6">
+                <div id="errorMessage">
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                @using (Html.BeginForm())
+                {
+                <div class="form-horizontal">
+                    <h4>Załóż konto</h4>
+
+                    <div class="form-group">
+                        <p>
+                            <label>Nazwa użytkownika</label>
+                            <br />
+                            @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", id = "username" } })
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label>Hasło</label>
+                            <br />
+                            @Html.PasswordFor(model => model.password, new { @class = "form-control", id = "password" } )
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label>Powtórz hasło</label>
+                            <br />
+                             <input type="password" name="psw" class="form-control" id ="password2">
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label>Imie</label>
+                            <br />
+                            @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", id = "imie" } })
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label>Nazwisko</label>
+                            <br />
+                            @Html.EditorFor(model => model.surname, new { htmlAttributes = new { @class = "form-control", id = "nazwisko" } })
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label>E-mail</label>
+                            <br />
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", id = "email" } })
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <label>Numer telefonu</label>
+                            <br />
+                            @Html.EditorFor(model => model.phoneNumber, new { htmlAttributes = new { @class = "form-control", id = "numerTelefonu" } })
+                        </p>
+                    </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input id="submitButton" type="submit" value="Załóż konto" class="btn btn-success"  style="float:right"/>
+                            </div>
+                        </div>
+                    </div>
+                    }
                 </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.surname, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.surname, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.surname, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.phoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.phoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.phoneNumber, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
+            <div class="col">
             </div>
         </div>
-    }
-
-    <div>
-        @Html.ActionLink("Back to List", "ListaUzytkownikow")
+      
     </div>
+
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+      
+        $("#submitButton").click(function (e) {
+            var isCorrect = true;
+
+            alert($("#pasword").val())
+            $("#errorMessage").html('');
+
+            if ($("#username").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole nazwy użytkownika nie może być puste</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#pasword").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Wpisz hasło!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#pasword2").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Wpisz potwierdznie hasła!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#pasword").val() !== $("#pasword2").val()) {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Hasła są różne</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#imie").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole imie nie może być puste</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#nazwisko").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole nazwisko nie może być puste</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#email").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole email nie może być puste</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if (!validateEmail($("#email").val())) {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole email ma niewłaściwy format</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#numerTelefonu").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole telefon nie może być puste</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+            if (isNaN($("#numerTelefonu").val())) {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole telefonu nie jest numerem!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if (!isCorrect) {
+                return false;
+            }
+
+        });
+
+    });
+
+    function validateEmail(emailField) {
+    var reg = /^([A-Za-z0-9_\-\.])+\@@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;  
+    if (reg.test(emailField) == false) {  
+        alert('Invalid Email Address');  
+        return false;  
+    }  
+    return true;  
+}  
+
+</script>
