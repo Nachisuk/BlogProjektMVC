@@ -15,7 +15,14 @@ namespace BlogProjekt.Controllers
         // GET: Main
         public ActionResult Index()
         {
-            return View();
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("PostyFollowedBlogs");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [Authorize]
@@ -313,6 +320,12 @@ namespace BlogProjekt.Controllers
         {
             ObsługaBazyDanych.UsunTag(id);
             return RedirectToAction("ListaTagow");
+        }
+
+        public ActionResult PostyFollowedBlogs()
+        {
+            var listapostow = ObsługaBazyDanych.zwrocPostyZFollowanychBlogow(User.Identity.Name);
+            return View(listapostow);
         }
 
     }

@@ -464,5 +464,18 @@ namespace BlogProjekt.KlasyPomocnicze
         {
             return bazadanych.PostSet.Where(post => post.Tags.Any(tag => tag.Tag_ID == id)).ToList();
         }
+
+        public static List<Post> zwrocPostyZFollowanychBlogow(string username)
+        {
+            Users user = bazadanych.UsersSet.FirstOrDefault(user1 => user1.username == username);
+            List<Follows> userFollows = user.Follows.ToList();
+            List<Post> followedBlogPosts = new List<Post>();
+            foreach(var follow in userFollows)
+            {
+                followedBlogPosts.AddRange(follow.Blogs.Post.ToList());
+            }
+
+            return followedBlogPosts.OrderByDescending(post => post.dataStworzenia).ToList();
+        }
     }
 }
