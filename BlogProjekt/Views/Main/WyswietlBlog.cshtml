@@ -7,83 +7,112 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-    <dl class="dl-horizontal">
-        <div class="col" style="display:flex">
-            <div id="blog_@Model.Blog_ID" style="margin-right:2px">
-                @Html.Partial("blogFollowButton", Model)
-            </div>
-            <div id="com_@Model.Blog_ID">
-                <span>@Model.followCount</span>
-            </div>
-        </div>
-</div>
-<div class="col-10">
-    @if (Model.Post.Count > 0)
-    {
-        foreach (var post in Model.Post)
-        {<text>
-    <div class="postClickHandler" data-post-id="@post.Post_ID">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>@post.title</h2>
-            </div>
-            <div style="max-height:320px;overflow:hidden">
-                <img class="img-fluid card-img-top" id="img-details" src="@post.img_route" alt="Alternate Text" />
-            </div>
-            <div class="card-body">
-                <p class="card-text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-                    @post.text_content
-                </p>
-                <p>
-                    @foreach (var tag in post.Tags)
-                    {
-                        <span class="badge badge-pill badge-secondary"> #@tag.tagName </span>
-                    }
-                </p>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col">
-                        <small class="text-muted">
-                            Opublikowane dnia: @(post.dataStworzenia.ToString("dd.M.yyyy") + "r.")
-                        </small>
-                    </div>
-                    <div class="col">
-                        <div class="float-right">
-                            <a href=@Url.Action("WyswietlPost", "Main", new { id = post.Post_ID})>
-                                <button type="button" class="btn btn-primary">Przejdź</button>
-                            </a>
-                            @if (Request.IsAuthenticated && (User.Identity.Name == Model.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
-                            {<text>
-                                    <a href=@Url.Action("EdytujPost", "Main", new {id = post.Post_ID}) event.stopPropagation();>
-                                        <button type="button" class="btn btn-primary">Edytuj</button>
-                                    </a>
-                                    <a onclick="return confirm('Czy na pewno chcesz usunąć ten post?');" href=@Url.Action("UsunPost", "Main", new { id = post.Post_ID, idBlog = Model.Blog_ID }) event.stopPropagation();>
-                                        <button type="button" class="btn btn-primary">Usuń</button>
-                                    </a>
-                            </text>}
-                        </div>
-                    </div>
-
+<div class="container" style="height: 100%; width: 100%">
+    <div>
+        <dl class="dl-horizontal">
+            <div class="col" style="display:flex">
+                <div id="blog_@Model.Blog_ID" style="margin-right:2px">
+                    @Html.Partial("blogFollowButton", Model)
                 </div>
-
+                <div id="com_@Model.Blog_ID">
+                    <span>@Model.followCount</span>
+                </div>
             </div>
+    </div>
 
+    <div class="row">
+        <div class="col">
+
+        </div>
+
+        <div class="col-10">
+            @if (Model.Post.Count > 0)
+            {
+                foreach (var post in Model.Post)
+                {<text>
+                        <div class="card mb-3 postClickHandler" data-post-id="@post.Post_ID">
+
+                            <div class="card-header ">
+                                @{
+                                    int alt_naglowek_dl = 10;
+                                }
+                                <h2 class="">
+                                    <a href=@Url.Action("WyswietlPost", "Main", new { id = post.Post_ID })>
+                                        @(post.title.IsEmpty() ? post.text_content.Substring(0, alt_naglowek_dl) + "..." : post.title)
+                                    </a>
+                                    @if (post.ifTop)
+                                    {
+                                        <span class="badge badge-secondary">!</span>
+                                    }
+                                </h2>
+                            </div>
+
+                            <div style="max-height: 320px;overflow: hidden;">
+                                <img class="img-fluid card-img-top" id="img-details" src="@post.img_route" alt="Alternate Text" />
+                            </div>
+
+                            <div class="card-body">
+                                <p class="card-text">
+                                    @{
+                                        int limit_dlugosci_podgladu = 15;
+                                    }
+                                    @(post.text_content.Length > limit_dlugosci_podgladu + 1 ? post.text_content.Substring(0, limit_dlugosci_podgladu) + "..." : post.text_content)
+                                </p>
+
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        Opublikowane dnia: @post.dataStworzenia.ToString("dd.MM.yyyyr.")
+                                    </small>
+                                </p>
+                            </div>
+
+                            <div class="card-footer">
+
+                                <div class="row">
+                                    <div class="col-8">
+                                        @foreach (var tag in post.Tags)
+                                        {
+                                            <span class="badge badge-pill badge-primary">#@tag.tagName</span>
+                                        }
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="float-right">
+                                            @if (Request.IsAuthenticated && (User.Identity.Name == Model.Users.username || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                            {<text>
+                                                    <a href=@Url.Action("EdytujPost", "Main", new {id = post.Post_ID}) event.stopPropagation();>
+                                                        <button type="button" class="btn btn-primary">Edytuj</button>
+                                                    </a>
+                                                    <a onclick="return confirm('Czy na pewno chcesz usunąć ten post?');" href=@Url.Action("UsunPost", "Main", new { id = post.Post_ID, idBlog = Model.Blog_ID }) event.stopPropagation();>
+                                                        <button type="button" class="btn btn-primary">Usuń</button>
+                                                    </a>
+                                            </text>}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                </text>}
+        }
+
+
+        </div>
+        <div class="col">
+            @if (Request.IsAuthenticated && (User.Identity.Name == Model.Users.username))
+            {
+                <a href=@Url.Action("StworzPost","Main", new {id = Model.Blog_ID })>
+                    <button type="button" class="btn btn-dark">Nowy post</button>
+                </a>
+            }
         </div>
     </div>
-    </text>}
-    }
+    <br />
 
 </div>
-<p>
-    @if (User.Identity.Name == Model.Users.username)
-    {
-        <a href=@Url.Action("StworzPost","Main", new {id = Model.Blog_ID })>Dodaj Post</a>
-    }
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
 
 
 <script>
