@@ -5,69 +5,158 @@
     ViewBag.Title = "WyswietlPost";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<html>
-<head>
-    <title></title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-</head>
-<body>
-    <div id="#comments">
-        @if (Model.Comments.Count > 0)
-        {
-            foreach (var comment in Model.Comments)
-            {
-                <text>
-                    <div class="card">
-                        <div class="card-header">
-                            <small>Dodany przez: @comment.Post.Blogs.Users.username</small>
 
-                            <div class="float-right row">
-                                <div class="col">
-                                    <div style="float:left">
-                                        @if (Request.IsAuthenticated && ((comment.User_ID == ObsługaBazyDanych.zwrocIdUzytkownikaPoUsername(User.Identity.Name)) || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
-                                        {<text>
-                                                <a style="text-decoration: none;color: inherit;" onclick="return confirm('Czy na pewno chcesz usunąć ten komentarz?');" href=@Url.Action("UsunKomentarz", "Main", new { id = comment.Comment_ID, idPostu = comment.Post.Post_ID})>
-                                                    <i class="fas fa-trash-alt" style="color:red"></i>
-                                                </a>
-                                        </text>}
-                                    </div>
 
-                                </div>
 
-                                <div class="col" style="display:flex">
-                                    <div id="button_@comment.Comment_ID" style="margin-right:2px">
-                                        @Html.Partial("commentsPartial", comment)
-                                    </div>
-                                    <div id="com_@comment.Comment_ID">
-                                        <span>@comment.upVotes</span>
-                                    </div>
-                                </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-1">
 
-                            </div>
-                        </div>
+        </div>
+        <div class="col-10">
 
-                        <div class="card-body">
-                            <p>
-                                @comment.content
-                            </p>
-                        </div>
+            <div class="card">
+
+
+                <div class="card-header" , style="background-color: #343a40; color: #ffffff">
+                    <span style="font-weight: bold">@Model.title </span>
+                    <div style="font-size: small; float:right">
+                        Dodany: @Model.dataStworzenia.ToString("dd.MM.yyyyr.")
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <img src="@Model.img_route" alt="Alternate Text" style=" width:90%;margin-bottom:20px;"/>
+                </div>
+
+                <div class="card-body">
+                    @Model.text_content
+                </div>
+
+                <div class="row">
+                    <div class="col">
+
+                    </div>
+                    <div class="col-11">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <span class="badge badge-pill badge-primary">#@tag.tagName</span>
+                        }
                     </div>
 
-                </text>
-            }
-        }
+                    <div class="col">
+
+                    </div>
+
+                </div>
+
+                </br>
+
+            </div>
+
+            <br />
+
+            <div class="container">
+                <h2>Komentarze: </h2>
+                @if (Request.IsAuthenticated)
+                {
+                    <a>zaladuj tu forma do komentow</a>
+                    <!--
+                    <div class="form-group">
+                        <p>
+                            <%= form.text_area :content, :class => "form-control", :size => 150 %>
+                        </p>
+                    </div>
+
+
+                    <p style="align-items: right; float: right">
+                        <%= form.submit "Dodaj komentarz", :class => "btn btn-warning" %>
+                    </p>
+                    -->
+                }
+                else
+                {
+                    <a href=@Url.Action("LogIn","Authorization")>
+                        Zaloguj się aby dodać komentarz
+                    </a>
+                }
+            </div>
+
+            </br>
+            </br>
+            </br>
+
+            <div id="#comments">
+                @if (Model.Comments.Count > 0)
+                {
+                    foreach (var comment in Model.Comments)
+                    {
+                        <text>
+                            <div class="card">
+                                <div class="card-header">
+                                    <small>Dodany przez: @comment.Post.Blogs.Users.username</small>
+
+                                    <div class="float-right row">
+                                        <div class="col">
+                                            <div style="float:left">
+                                                @if (Request.IsAuthenticated && ((comment.User_ID == ObsługaBazyDanych.zwrocIdUzytkownikaPoUsername(User.Identity.Name)) || ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name)))
+                                                {<text>
+                                                        <a style="text-decoration: none;color: inherit;" onclick="return confirm('Czy na pewno chcesz usunąć ten komentarz?');" href=@Url.Action("UsunKomentarz", "Main", new { id = comment.Comment_ID, idPostu = comment.Post.Post_ID})>
+                                                            <i class="fas fa-trash-alt" style="color:red"></i>
+                                                        </a>
+                                                </text>}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col" style="display:flex">
+                                            <div id="button_@comment.Comment_ID" style="margin-right:2px">
+                                                @Html.Partial("commentsPartial", comment)
+                                            </div>
+                                            <div id="com_@comment.Comment_ID">
+                                                <span>@comment.upVotes</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <p>
+                                        @comment.content
+                                    </p>
+                                </div>
+                            </div>
+
+                        </text>
+                    }
+                }
+            </div>
+
+
+
+        </div>
+
+        <div class="col-sm-1">
+
+        </div>
+
+
+
     </div>
 
+</div>
+
+
+<!--do usuniecia-->
     <p>
         @if (User.Identity.IsAuthenticated)
         {
             <a href=@Url.Action("StworzKomentarz","Main", new {id = Model.Post_ID })>Dodaj Komentarz</a>
         }
         @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        @Html.ActionLink("Back to List", "Index")
     </p>
-</body>
-</html>
+
 
 <script>
     $(function () {
