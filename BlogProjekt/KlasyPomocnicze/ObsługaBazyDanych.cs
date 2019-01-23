@@ -475,7 +475,7 @@ namespace BlogProjekt.KlasyPomocnicze
                 followedBlogPosts.AddRange(follow.Blogs.Post.ToList());
             }
 
-            return followedBlogPosts;
+            return followedBlogPosts.OrderByDescending(post => post.dataStworzenia).ToList();
         }
     }
 }
