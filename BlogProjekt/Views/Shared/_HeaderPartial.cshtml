@@ -10,16 +10,23 @@
             <li class="nav-item" style="font-family: 'Impact'">
                 <a class="navbar-brand" href=@Url.Action("Index", "Main")>ProjektBlogi</a>
             </li>
+            @if (Request.IsAuthenticated)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @((action.ToString().Equals("PostyFollowedBlogs") && controller.ToString().Equals("Main"))? " active" : "")"
+                       href=@Url.Action("PostyFollowedBlogs","Main")>Aktualności</a>
+                </li>
+            }
             <li class="nav-item">
-                <a class=@("nav-link" + (action.ToString().Equals("ListaBlogow") && controller.ToString().Equals("Main")? " active" : ""))
+                <a class="nav-link @((action.ToString().Equals("ListaBlogow") && controller.ToString().Equals("Main"))? " active" : "")"
                    href=@Url.Action("ListaBlogow","Main")>Blogi</a>
             </li>
             <li class="nav-item">
-                <a class=@("nav-link" + (action.ToString().Equals("ListaKind") && controller.ToString().Equals("Main")? " active" : ""))
+                <a class="nav-link @((action.ToString().Equals("ListaKind") && controller.ToString().Equals("Main"))? " active" : "")"
                    href=@Url.Action("ListaKind","Main")>Rodzaje</a>
             </li>
             <li class="nav-item">
-                <a class=@("nav-link" + (action.ToString().Equals("ListaTagow") && controller.ToString().Equals("Main")? " active" : ""))
+                <a class="nav-link @((action.ToString().Equals("ListaTagow") && controller.ToString().Equals("Main"))? " active" : "")"
                    href=@Url.Action("ListaTagow","Main")>Tagi</a>
             </li>
         </ul>
@@ -67,14 +74,30 @@
                                     @if (listaBlogow.Count != 0)
                                     {<text>
                                             <hr>
-                                        @foreach (var x in listaBlogow)
-                                        {
-                                            <a class="dropdown-item" href=@Url.Action("WyswietlBlog", "Main", new { id = x.Blog_ID})>
-                                                @x.nazwa
-                                            </a>
-                                        }
-                                            
+                                            <a class="dropdown-item disabled" style="color:rgb(33, 37, 41); font-weight: bold;">Moje blogi:</a>
+                                            @foreach (var x in listaBlogow)
+                                            {
+                                                <a class="dropdown-item" href=@Url.Action("WyswietlBlog", "Main", new { id = x.Blog_ID})>
+                                                    @x.nazwa
+                                                </a>
+                                            }
+
                                     </text>}
+
+                                    @{ List<Follows> listaSubow = ObsługaBazyDanych.zwrocFollowanychBlogow(User.Identity.Name);}
+                                    @if (listaSubow.Count() > 0)
+                                    {<text>
+                                            <hr>
+                                            <a class="dropdown-item disabled " style="color:rgb(33, 37, 41); font-weight: bold;">Subskrybcje:</a>
+                                            @foreach (var x in listaSubow)
+                                            {
+                                                <a class="dropdown-item" href=@Url.Action("WyswietlBlog", "Main", new { id = x.Blogs.Blog_ID})>
+                                                   @x.Blogs.nazwa
+                                                </a>
+                                            }
+
+                                    </text>}
+
                                 </div>
                             </li>
 
