@@ -14,9 +14,12 @@
                 <div id="blog_@Model.Blog_ID" style="margin-right:2px">
                     @Html.Partial("blogFollowButton", Model)
                 </div>
-                <div id="com_@Model.Blog_ID">
-                    <span>@Model.followCount</span>
-                </div>
+                <span class="btn btn-dark">
+                    <div id="com_@Model.Blog_ID">
+                        <span>@Model.followCount</span>
+                    </div>
+                </span>
+               
             </div>
     </div>
 

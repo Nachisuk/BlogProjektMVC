@@ -325,6 +325,7 @@ namespace BlogProjekt.Controllers
         public ActionResult PostyFollowedBlogs()
         {
             var listapostow = ObsługaBazyDanych.zwrocPostyZFollowanychBlogow(User.Identity.Name);
+
             return View(listapostow);
         }
 
