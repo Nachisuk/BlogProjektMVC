@@ -28,7 +28,7 @@
         <div class="col-10">
             @if (Model.Post.Count > 0)
             {
-                foreach (var post in Model.Post)
+                foreach (var post in Model.Post.OrderByDescending(x=>x.ifTop))
                 {<text>
                         <div class="card mb-3 postClickHandler" data-post-id="@post.Post_ID">
 
