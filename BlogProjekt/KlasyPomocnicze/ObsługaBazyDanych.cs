@@ -284,10 +284,21 @@ namespace BlogProjekt.KlasyPomocnicze
         {
             return bazadanych.TagsSet.FirstOrDefault(tag => tag.tagName == nazwa);
         }
+        public static Tags ZwrocTagPoId(int id)
+        {
+            return bazadanych.TagsSet.FirstOrDefault(tag => tag.Tag_ID == id);
+        }
+
         public static List<Tags> zwrocListeTag()
         {
             return bazadanych.TagsSet.ToList();
         }
+
+        public static int ilePostowPodTagiem(Tags tag)
+        {
+            return tag.Post.Count();
+        }
+
 
         public static Comments zwrocKomentarzPoID(int id)
         {

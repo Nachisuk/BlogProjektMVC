@@ -1,53 +1,86 @@
 ﻿@model IEnumerable<BlogProjekt.Models.Tags>
-
+@using BlogProjekt.KlasyPomocnicze;
 @{
-    
+
     ViewBag.Title = "ListaTagow";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ListaTagow</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Tag_ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tagName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataStworzenia)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataAktualizacji)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tag_ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tagName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataStworzenia)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataAktualizacji)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
 
-</table>
+@if (Request.IsAuthenticated && ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
+{<text>
+<div class="row">
+    <div class="col">
+        <h1>Tagi</h1>
+    </div>
+    <div class="col-10">
+
+    </div>
+    <div class="col">
+        <a href=@Url.Action("StworzTag","Main")>
+            <button type="button" class="btn btn-dark">Nowy tag</button>
+        </a>
+    </div>
+    
+</div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nazwa</th>
+                    <th scope="col">Ilość postów</th>
+                    <th scope="col"></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">
+                            @Html.DisplayFor(modelItem => item.Tag_ID)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tagName)
+                        </td>
+                        <td>
+                            @ObsługaBazyDanych.ilePostowPodTagiem(item)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+</text>}
+else
+{<text>
+    @{
+        int iter = 0;
+        int dziel = 5;
+    }
+        <div class="text-center ">
+            @foreach (var item in Model)
+            {<text>
+                    <a href=@Url.Action("WyswietlTagowane", "WyswietlTagowane", new {/* id = item.PrimaryKey */}) event.stopPropagation();>
+                        <button type="button" class="btn btn-primary">#@item.tagName</button>
+                    </a>
+
+                    @if (++iter == dziel)
+                    {<text>
+                            <br /> <br />
+                            @{ iter = 0; dziel = (dziel == 5) ? 4 : 5;}
+                    </text>}
+            </text>}
+        </div>
+</text>}
+
+
