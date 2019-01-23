@@ -72,13 +72,13 @@
             $("#errorMessage").html('');
             if ($("#blogName").val() == '')
             {
-                var errorText = $('<div class="error">Pole nazwy nie może być puste!!</div>');
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole nazwy nie może być puste!!</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
             }
             if ($("#tags").val() == '')
             {;
-                var errorText = $('<div class="error">Musisz wybrać kategorie bloga!</div>');
+                var errorText = $('<div class="error alert alert-danger" role="alert">Musisz wybrać kategorie bloga!</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
             }
@@ -95,7 +95,5 @@
 </script>
 
 <style>
-    .error {
-        color: red;
-    }
+
 </style>
