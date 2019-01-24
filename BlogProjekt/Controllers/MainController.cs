@@ -58,7 +58,7 @@ namespace BlogProjekt.Controllers
                 blog.dataZalozenia = DateTime.Now;
                 blog.followCount = 0;
                 ObsługaBazyDanych.dodajNowyBlog(User.Identity.Name, blog, test);
-                return RedirectToAction("Index");
+                return RedirectToAction("ListaBlogow");
             }
             return View();
         }
@@ -189,7 +189,7 @@ namespace BlogProjekt.Controllers
             if(ModelState.IsValid)
             {
                 ObsługaBazyDanych.dodajKind(kind);
-                return RedirectToAction("Index");
+                return RedirectToAction("ListaKind");
             }
             return View();
         }
@@ -205,7 +205,7 @@ namespace BlogProjekt.Controllers
             if (ModelState.IsValid)
             {
                 ObsługaBazyDanych.dodajTag(tag);
-                return RedirectToAction("Index");
+                return RedirectToAction("ListaTagow");
             }
             return View();
         }

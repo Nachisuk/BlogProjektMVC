@@ -14,7 +14,9 @@
 
     </div>
     <div class="col-md-6 col-md-offset-3">
+        <div id="errorMessage">
 
+        </div>
         <h1>Zaloguj</h1>
         @using (Html.BeginForm())
         {<text>
@@ -24,7 +26,7 @@
                 <div class="form-group">
                     <p>
                         @Html.LabelFor(model => model.Email)
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", id = "email" } })
                         <!--tu ewentualnie te validate-->
                     </p>
                 </div>
@@ -32,7 +34,7 @@
                 <div class="form-group">
                     <p>
                         @Html.LabelFor(model => model.Password)
-                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", id = "password" })
                         <!--tu ewentualnie te validate-->
                     </p>
                 </div>
@@ -42,7 +44,7 @@
                     </p>
                 </div>
 
-                <input type="submit" value="Log in" class="btn btn-primary" />
+                <input id="submitButton" type="submit" value="Log in" class="btn btn-primary" />
 
 
         </text>}
@@ -55,5 +57,30 @@
 </div>
 
 <script>
-    
+   
+        $(document).ready(function () {
+
+            $("#submitButton").click(function (e) {
+                var isCorrect = true;
+
+                $("#errorMessage").html('');
+
+                if ($("#email").val() == '') {
+                    var errorText = $('<div class="error alert alert-danger" role="alert">Pole email nie może być puste!</div>');
+                    $("#errorMessage").append(errorText);
+                    isCorrect = false;
+                }
+                if ($("#password").val() == '') {
+                    var errorText = $('<div class="error alert alert-danger" role="alert">Podaj hasło!</div>');
+                    $("#errorMessage").append(errorText);
+                    isCorrect = false;
+                }
+
+                if (!isCorrect) {
+                    return false;
+                }
+
+            });
+
+    });
 </script>

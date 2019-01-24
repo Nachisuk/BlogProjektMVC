@@ -150,7 +150,7 @@
                 isCorrect = false;
             }
 
-            else if (!validateEmail($("#email").val())) {
+            if (!validateEmail($("#email").val())) {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Pole email ma niewłaściwy format</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
