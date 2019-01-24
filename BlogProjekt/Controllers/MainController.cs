@@ -21,15 +21,20 @@ namespace BlogProjekt.Controllers
             }
             else
             {
-                return View();
+                return RedirectToAction("ListaBlogow");
             }
         }
 
         [Authorize]
         public ActionResult ListaUzytkownikow()
         {
-            List<Users> listauzytkownikow = ObsługaBazyDanych.zwrocListeUzytkownikow();
-            return View(listauzytkownikow);
+            if (ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
+            {
+                List<Users> listauzytkownikow = ObsługaBazyDanych.zwrocListeUzytkownikow();
+                return View(listauzytkownikow);
+            }
+            
+            return RedirectToAction("Index");
         }
 
         [Authorize]
@@ -104,7 +109,7 @@ namespace BlogProjekt.Controllers
             TempData["BlogPostId"] = id;
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult StworzPost(Post post, FormCollection form)
         {
@@ -124,27 +129,27 @@ namespace BlogProjekt.Controllers
             
             return View(post);
         }
-
+        [Authorize]
         public ActionResult UsunPost(int id, int idBlog)
         {
             ObsługaBazyDanych.usunPost(id);
             var blog = ObsługaBazyDanych.zwrocBlogPoId(idBlog);
-            return View("WyswietlBlog", blog);
+            return RedirectToAction("WyswietlBlog", new { id = idBlog });
         }
-
+        [Authorize]
         public ActionResult UsunKomentarz(int id, int idPostu)
         {
             ObsługaBazyDanych.usunKomentarz(id);
             var post = ObsługaBazyDanych.zwrocPostPoId(idPostu);
             return View("WyswietlPost", post);
         }
-
+        [Authorize]
         public ActionResult StworzKomentarz(int id)
         {
             TempData["PostCommentId"] = id;
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult StworzKomentarz(Comments comment)
         {
@@ -158,7 +163,7 @@ namespace BlogProjekt.Controllers
             }
             return View();
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult StworzKomentarzJava(int id, string content)
         {
@@ -172,11 +177,12 @@ namespace BlogProjekt.Controllers
 
             return Json(new { id1 = id}, JsonRequestBehavior.AllowGet);
         }
-
+        [Authorize]
         public ActionResult StworzKind()
         {
             return View();
         }
+        [Authorize]
         [HttpPost]
         public ActionResult StworzKind(Kinds kind)
         {
@@ -187,11 +193,12 @@ namespace BlogProjekt.Controllers
             }
             return View();
         }
-
+        [Authorize]
         public ActionResult StworzTag()
         {
             return View();
         }
+        [Authorize]
         [HttpPost]
         public ActionResult StworzTag(Tags tag)
         {
@@ -202,7 +209,7 @@ namespace BlogProjekt.Controllers
             }
             return View();
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult stworztagasync(string tagName)
         {
@@ -212,7 +219,7 @@ namespace BlogProjekt.Controllers
             return Json(new { id = tag.Tag_ID, nazwa = tag.tagName  }, JsonRequestBehavior.AllowGet);
 
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult komentarzUpVote(string userName,string commentID)
         {
@@ -223,6 +230,7 @@ namespace BlogProjekt.Controllers
              return Json(new { upVotes = comment.upVotes, id = comment.Comment_ID, user= userName},JsonRequestBehavior.AllowGet);
 
         }
+        [Authorize]
         [HttpGet]
         public ActionResult komentarzDownVote(string userName, string commentID)
         {
@@ -233,7 +241,7 @@ namespace BlogProjekt.Controllers
             return Json(new { upVotes = comment.upVotes, id = comment.Comment_ID, user = userName }, JsonRequestBehavior.AllowGet);
 
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult blogFollow(string userName, string blogID)
         {
@@ -244,7 +252,7 @@ namespace BlogProjekt.Controllers
             return Json(new { followCount = blog.followCount, id = blog.Blog_ID, user = userName }, JsonRequestBehavior.AllowGet);
 
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult blogUnFollow(string userName, string blogID)
         {
@@ -294,13 +302,13 @@ namespace BlogProjekt.Controllers
         {
             return View(ObsługaBazyDanych.zwrocListeKind());
         }
-
+        [Authorize]
         public ActionResult EdytujBlog(int id)
         {
             var blog = ObsługaBazyDanych.zwrocBlogPoId(id);
             return View(blog);
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult EdytujBlog(Blogs blog, FormCollection form)
         {
@@ -312,37 +320,42 @@ namespace BlogProjekt.Controllers
             }
             return RedirectToAction("ListaBlogow");
         }
-
+        [Authorize]
         public ActionResult EdytujPost(int id)
         {
+            
             var post = ObsługaBazyDanych.zwrocPostPoId(id);
+            TempData["BlogPostId"] = post.Blogs.Blog_ID;
             return View(post);
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult EdytujPost(Post post, FormCollection form)
         {
+            var idBlogu = (int)TempData["BlogPostId"];
             if (ModelState.IsValid)
             {
                 var test = form["TagsIds"];
                 ObsługaBazyDanych.EdytujPost(post, test);
-                return RedirectToAction("ListaBlogow");
+                return RedirectToAction("WyswietlBLog", new { id = idBlogu });
             }
-            return RedirectToAction("ListaBlogow");
+            return RedirectToAction("WyswietlBLog", new { id = idBlogu });
         }
-
+        [Authorize]
         public ActionResult UsunKind(int id)
         {
-            ObsługaBazyDanych.UsunKind(id);
+            if(ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
+                ObsługaBazyDanych.UsunKind(id);
             return RedirectToAction("ListaKind");
         }
-
+        [Authorize]
         public ActionResult UsunTag(int id)
         {
-            ObsługaBazyDanych.UsunTag(id);
+            if (ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
+                ObsługaBazyDanych.UsunTag(id);
             return RedirectToAction("ListaTagow");
         }
-
+        [Authorize]
         public ActionResult PostyFollowedBlogs()
         {
             var listapostow = ObsługaBazyDanych.zwrocPostyZFollowanychBlogow(User.Identity.Name);

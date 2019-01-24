@@ -5,122 +5,140 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>EdytujPost</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Post</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Post_ID)
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
-            </div>
         </div>
+        <div class="col-6">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ifTop, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.ifTop)
-                    @Html.ValidationMessageFor(model => model.ifTop, "", new { @class = "text-danger" })
+            <div id="errorMessage">
+
+            </div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Post_ID)
+
+                <h1>Edytuj post</h1>
+                <div class="form-group">
+                    <p>
+                        <label>Tytuł postu</label>
+                        <br />
+                        @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control", id = "postName" } })
+
+                    </p>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <p>
+                        <label>Treść</label>
+                        <br />
+                        @Html.TextAreaFor(model => model.text_content, new { @class = "form-control", id = "postContent" })
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        <label>Obrazek</label>
+                        <br />
+                        @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control", id = "postImgRoute" } })
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        <label>Czy przypiąć?</label>
+                        <br />
+                        @Html.EditorFor(model => model.ifTop)
+                    </p>
+                </div>
+
+                <div>
+                    <div class="form-group">
+
+                        <label>Tagi postu</label>
+                        <br />
+                        <div style="float:right">
+                            <span id="toggleAddTag">Chcesz dodać nowy tag? <b>Kliknij!</b></span>
+                            <div id="addTagForm">
+
+                                <label>Wpisz nazwe tagu</label>
+                                <input class="form-control" type="text" id="label" name="TagName" value="" />
+                                <button type="button" id="addTag" class="btn btn-success" style="margin-top:5px">Dodaj!</button>
+
+                            </div>
+                        </div>
+                        <select id="tags1" class="selectpicker" name="TagsIds" multiple data-live-search="true" title="Dodaj tagi postu">
+                            @foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
+                            {
+                                if (Model.Tags.FirstOrDefault(t => t.Tag_ID == tag.Tag_ID) != null)
+                                {
+                                    <option value=@tag.Tag_ID selected>@tag.tagName</option>
+                                }
+                                else
+                                {
+                                    <option value=@tag.Tag_ID>@tag.tagName</option>
+                                }
+                            }
+                        </select>
+
+                    </div>
+                    
+
+
+                </div>
+
+
+
+                <p>
+                    <input id="submitButton" type="submit" value="Dodaj post" class="btn btn-success" />
+                </p>
+            }
+
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.text_content, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.text_content, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.text_content, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.img_route, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.img_route, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.img_route, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.image_file_name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.image_file_name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.image_file_name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <p>Rodzaje blogu</p>
-            <div class="col-md-10">
-                <select id="tags" class="selectpicker" name="TagsIds" multiple data-live-search="true" title="Wybierz kategorie Bloga">
-                    @foreach (var tag in ObsługaBazyDanych.zwrocListeTag())
-                    {
-                        if (Model.Tags.FirstOrDefault(t => t.Tag_ID == tag.Tag_ID) != null)
-                        {
-                            <option value=@tag.Tag_ID selected>@tag.tagName</option>
-                        }
-                        else
-                        {
-                            <option value=@tag.Tag_ID>@tag.tagName</option>
-                        }
-                    }
-                </select>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+        <div class="col">
+            
         </div>
     </div>
-}
-
-<div>
-    <p><strong>Twój tag nie istnieje na liście? Dodaj go i bądź szczęśliwym człowiekiem</strong></p>
-    <input type="text" id="label" name="TagName" value="" />
-    <button type="button" id="addTag"></button>
 </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+
 
 <script>
     $(document).ready(function () {
+        $('#addTagForm').hide();
         $('.selectpicker').selectpicker('render');
 
         $('#addTag').click(function () {
-            alert($('#label').val());
+
+            if ($('#label').val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Tag nie może być pusty!!</div>');
+                $("#errorMessage").append(errorText);
+                return false;
+            }
+            $("#errorMessage").html('');
+            $('#addTagForm').hide();
             var link = '@Url.Action("stworztagasync","Main")';
             var args = {
                 tagName: $('#label').val()
-            }
+            };
 
+            $('#label').val('');
             $.ajax({
                 type: "GET",
                 url: link, // url of your action
                 data: args, // parameters if available
                 dataType: "json",
                 success: function (data) {
-
-                    alert("Tag dodany");
                     $('.selectpicker').append(new Option(data.nazwa, data.id));
-                    alert("Hello there");
                     $('.selectpicker').selectpicker('refresh');
-                    aler("Koniec")
                 },
                 error: function (httpRequest, textStatus, errorThrown) {
                     alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
@@ -128,6 +146,42 @@
             });
 
         });
+
+        $("#submitButton").click(function (e) {
+            var isCorrect = true;
+
+            $("#errorMessage").html('');
+
+            if ($("#postName").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Pole nazwy nie może być puste!!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if ($("#postContent").val() == '') {
+                var errorText = $('<div class="error alert alert-danger" role="alert">Treść postu nie może być pusta!!</div>');
+                $("#errorMessage").append(errorText);
+                isCorrect = false;
+            }
+
+            if (!isCorrect) {
+                return false;
+            }
+
+        });
+
+        $("#toggleAddTag").click(function () {
+            $('#addTagForm').toggle('slow');
+        })
     });
 
 </script>
+
+
+
+
+
+
+
+
+

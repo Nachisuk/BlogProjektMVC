@@ -31,7 +31,7 @@ namespace BlogProjekt.Controllers
 
                 ObsługaBazyDanych.dodajNowegoUzytkownika(user);
 
-                return RedirectToAction("ListaUzytkownikow", "Main");
+                return RedirectToAction("Index", "Main");
             }
             return View();
         }
@@ -52,13 +52,24 @@ namespace BlogProjekt.Controllers
         {
             if (!ModelState.IsValid)
             {
+                if (model.Email==null || model.Password == null)
+                {
+                    ModelState.AddModelError("", "Pole email i haslo nie mogą być puste!");
+                    return View();
+                }
                 return View();
             }
+            if (model.Email.Equals("") || model.Password.Equals(""))
+            {
+                ModelState.AddModelError("", "Pole email i haslo nie mogą być puste!");
+                return View();
+            }
+
             var user = ObsługaBazyDanych.sprawdzCzyUzytkownikIsniteje(model.Email, model.Password);
             if(!(user is null))
             {
                 FormsAuthentication.SetAuthCookie(user.username, false);
-                return RedirectToAction("ListaUzytkownikow", "Main");
+                return RedirectToAction("Index", "Main");
             }
 
             ModelState.AddModelError("", "Niepoprawny email lub hasło");

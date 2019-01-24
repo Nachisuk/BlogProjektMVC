@@ -261,8 +261,19 @@ namespace BlogProjekt.KlasyPomocnicze
             bazadanych.SaveChanges();
         }
 
+        public static bool czyIstniejeKind(string _kindName)
+        {
+            if (bazadanych.KindsSet.FirstOrDefault(tmp => tmp.kindName == _kindName) != null)
+                return true;
+            else
+                return false;
+        }
+
         public static void dodajKind(Kinds kind)
         {
+            if (czyIstniejeKind(kind.kindName))
+                return;
+
             kind.dataAktualizacji = DateTime.Now;
             kind.dataStworzenia = DateTime.Now;
 
@@ -278,6 +289,9 @@ namespace BlogProjekt.KlasyPomocnicze
 
         public static void dodajTag(Tags tag)
         {
+            if (czyIstniejeTag(tag.tagName))
+                return;
+
             tag.dataAktualizacji = DateTime.Now;
             tag.dataStworzenia = DateTime.Now;
 
@@ -285,8 +299,18 @@ namespace BlogProjekt.KlasyPomocnicze
             bazadanych.SaveChanges();
         }
 
+        public static bool czyIstniejeTag(string _tagName)
+        {
+            if (bazadanych.TagsSet.FirstOrDefault(tmp => tmp.tagName == _tagName) != null)
+                return true;
+            else
+                return false;
+        }
+
         public static void dodajTag(string tagName)
         {
+            if (czyIstniejeTag(tagName))
+                return;
             Tags tmpTag = new Tags();
             tmpTag.dataAktualizacji = DateTime.Now;
             tmpTag.dataStworzenia = DateTime.Now;
@@ -426,7 +450,7 @@ namespace BlogProjekt.KlasyPomocnicze
             var tmpPost = bazadanych.PostSet.FirstOrDefault(post1 => post1.Post_ID == post.Post_ID);
             tmpPost.dataAktualizacji = DateTime.Now;
             tmpPost.ifTop = post.ifTop;
-            tmpPost.image_file_name = post.image_file_name;
+            //tmpPost.image_file_name = post.image_file_name;
             tmpPost.img_route = post.img_route;
             if (tmpPost.img_route is null) tmpPost.img_route = "htttp?";
             tmpPost.title = post.title;
@@ -502,5 +526,12 @@ namespace BlogProjekt.KlasyPomocnicze
             return user.Follows.ToList();
 
         }
+
+        public static String zwrocUsernameUzytkownikaPoId(int userID)
+        {
+            Users user = bazadanych.UsersSet.FirstOrDefault(userx => userx.User_ID == userID);
+            return user.username;
+        }
+
     }
 }

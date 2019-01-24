@@ -33,6 +33,7 @@
                     <th scope="col">Nazwa</th>
                     <th scope="col">Ilość postów</th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
 
                 </tr>
             </thead>
@@ -51,8 +52,9 @@
                             @ObsługaBazyDanych.ilePostowPodTagiem(item)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            <a href=@Url.Action("ListaPostowPoTagu", "Main", new {id = item.Tag_ID})> Lista tag</a> |
+                            <a href=@Url.Action("ListaPostowPoTagu", "Main", new {id = item.Tag_ID})> Lista tag</a>
+                        </td>
+                        <td>
                             <a href=@Url.Action("UsunTag", "Main", new { id = item.Tag_ID })>Usuń</a>
                         </td>
                     </tr>

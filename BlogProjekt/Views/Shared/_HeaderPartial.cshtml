@@ -58,22 +58,19 @@
                                     Witaj @User.Identity.Name
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href=#>
-                                        <!--href = edutujUsera-->
-                                        Edytuj profil
-                                    </a>
 
                                     @if (ObsługaBazyDanych.sprawdzCzyUzytkownikJestAdminem(User.Identity.Name))
                                     {<text>
                                             <a class="dropdown-item" href=@Url.Action("ListaUzytkownikow", "Main")>
                                                 Użytkownicy
                                             </a>
+                                            <hr>
                                     </text>}
 
                                     @{ List<Blogs> listaBlogow = ObsługaBazyDanych.zwrocListeBlogowUzytkownika(User.Identity.Name);}
                                     @if (listaBlogow.Count != 0)
                                     {<text>
-                                            <hr>
+
                                             <a class="dropdown-item disabled" style="color:rgb(33, 37, 41); font-weight: bold;">Moje blogi:</a>
                                             @foreach (var x in listaBlogow)
                                             {
@@ -92,7 +89,7 @@
                                             @foreach (var x in listaSubow)
                                             {
                                                 <a class="dropdown-item" href=@Url.Action("WyswietlBlog", "Main", new { id = x.Blogs.Blog_ID})>
-                                                   @x.Blogs.nazwa
+                                                    @x.Blogs.nazwa
                                                 </a>
                                             }
 

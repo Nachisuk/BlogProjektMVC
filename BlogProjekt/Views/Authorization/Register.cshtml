@@ -150,18 +150,20 @@
                 isCorrect = false;
             }
 
-            if (!validateEmail($("#email").val())) {
+            else if (!validateEmail($("#email").val())) {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Pole email ma niewłaściwy format</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
             }
+
+            
 
             if ($("#numerTelefonu").val() == '') {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Pole telefon nie może być puste</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
             }
-            if (isNaN($("#numerTelefonu").val())) {
+            else if (isNaN($("#numerTelefonu").val())) {
                 var errorText = $('<div class="error alert alert-danger" role="alert">Pole telefonu nie jest numerem!</div>');
                 $("#errorMessage").append(errorText);
                 isCorrect = false;
@@ -178,10 +180,11 @@
     function validateEmail(emailField) {
     var reg = /^([A-Za-z0-9_\-\.])+\@@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;  
     if (reg.test(emailField) == false) {  
-        alert('Invalid Email Address');  
+          
         return false;  
     }  
     return true;  
-}  
+    }  
+
 
 </script>
